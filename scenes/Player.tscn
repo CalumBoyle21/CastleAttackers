@@ -1,8 +1,27 @@
-[gd_scene load_steps=8 format=3 uid="uid://bqf0player01"]
+[gd_scene load_steps=15 format=3 uid="uid://bqf0player01"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/interaction/villager_interactor.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/ui/crosshair.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/ui/inventory_panel.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/interaction/build_controller.gd" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/world/Post.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/world/WallEdge.tscn" id="7"]
+[ext_resource type="Script" path="res://scripts/ui/hotbar.gd" id="8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
+bg_color = Color(0.02, 0.02, 0.02, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.12, 0.12, 0.14, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+content_margin_left = 32.0
+content_margin_top = 24.0
+content_margin_right = 32.0
+content_margin_bottom = 24.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.4
@@ -41,6 +60,11 @@ collision_mask = 1
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
 current = true
 
+[node name="BuildController" type="Node3D" parent="."]
+script = ExtResource("5")
+post_scene = ExtResource("6")
+wall_edge_scene = ExtResource("7")
+
 [node name="VillagerInteractor" type="Node3D" parent="."]
 script = ExtResource("2")
 
@@ -53,3 +77,94 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("3")
+
+[node name="Hotbar" type="Control" parent="HUD"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("8")
+
+[node name="SlotsContainer" type="HBoxContainer" parent="HUD/Hotbar"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -276.0
+offset_top = -70.0
+offset_right = 276.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="InventoryPanel" type="PanelContainer" parent="HUD"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_overlay")
+script = ExtResource("4")
+
+[node name="Center" type="CenterContainer" parent="HUD/InventoryPanel"]
+layout_mode = 2
+
+[node name="ContentCard" type="PanelContainer" parent="HUD/InventoryPanel/Center"]
+layout_mode = 2
+custom_minimum_size = Vector2(640, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/InventoryPanel/Center/ContentCard"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Columns" type="HBoxContainer" parent="HUD/InventoryPanel/Center/ContentCard/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="InventoryColumn" type="VBoxContainer" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns/InventoryColumn"]
+layout_mode = 2
+text = "Home Inventory"
+theme_override_font_sizes/font_size = 24
+
+[node name="Separator" type="HSeparator" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns/InventoryColumn"]
+layout_mode = 2
+
+[node name="ListContainer" type="VBoxContainer" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns/InventoryColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns"]
+layout_mode = 2
+
+[node name="CraftingColumn" type="VBoxContainer" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns/CraftingColumn"]
+layout_mode = 2
+text = "Crafting"
+theme_override_font_sizes/font_size = 24
+
+[node name="Separator" type="HSeparator" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns/CraftingColumn"]
+layout_mode = 2
+
+[node name="CraftListContainer" type="VBoxContainer" parent="HUD/InventoryPanel/Center/ContentCard/VBox/Columns/CraftingColumn"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HintLabel" type="Label" parent="HUD/InventoryPanel/Center/ContentCard/VBox"]
+layout_mode = 2
+text = "Press Esc to close"
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)

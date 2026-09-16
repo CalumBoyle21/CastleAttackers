@@ -1,8 +1,7 @@
 class_name AgentState
 extends Node
 
-## Base class for all villager states. Subclass this and add the node
-## as a child of a StateMachine node to register a new state by name.
+## Base class for all villager states.
 
 var agent: VillagerAgent
 var state_machine: AgentStateMachine

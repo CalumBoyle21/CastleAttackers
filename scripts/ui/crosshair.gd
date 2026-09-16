@@ -1,8 +1,5 @@
 extends Control
 
-## Small reticle at screen center showing where the interact raycast
-## aims. Brightens/grows when something interactable is under it.
-
 const RADIUS: float = 5.0
 const RING_WIDTH: float = 2.0
 const COLOR_DEFAULT: Color = Color(1, 1, 1, 0.85)

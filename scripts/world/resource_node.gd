@@ -16,8 +16,6 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	WorldRegistry.unregister_resource_node(self)
 
-## Removes one unit and returns its resource type. Hides and respawns
-## the node once depleted.
 func harvest() -> String:
 	amount_remaining -= 1
 	if amount_remaining <= 0:

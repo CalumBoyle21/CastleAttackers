@@ -40,9 +40,8 @@ func has_reached_target() -> bool:
 	return _flat_distance_to(move_target) <= ARRIVE_DISTANCE
 
 ## Steers in a straight line toward move_target and faces the visual mesh
-## toward the direction of travel. Does not call move_and_slide() itself.
-## Direct-line movement is enough while the world is one open flat plane;
-## swap this for NavigationAgent3D pathing once obstacles/buildings exist.
+## toward the direction of travel.
+## TODO implement pathfinding.
 func move_along_path(delta: float) -> void:
 	if not has_move_target or _flat_distance_to(move_target) <= ARRIVE_DISTANCE:
 		has_move_target = false
@@ -66,10 +65,8 @@ func _flat_distance_to(point: Vector3) -> float:
 func set_highlighted(value: bool) -> void:
 	mesh_instance.material_overlay = HighlightUtil.get_material() if value else null
 
-## Manually forces the villager between Idle and Gather, bypassing the
-## normal Wander gate. Used by the hover/click interactor.
 func toggle_idle_gather() -> void:
-	if state_machine.current_state and state_machine.current_state.name == "Idle":
+	if state_machine.current_state and state_machine.current_state.name == "Paused":
 		state_machine.change_state("Gather")
 	else:
-		state_machine.change_state("Idle")
+		state_machine.change_state("Paused")

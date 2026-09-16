@@ -34,7 +34,7 @@ ambient_light_energy = 0.6
 [node name="Main" type="Node3D"]
 script = ExtResource("2")
 villager_scene = ExtResource("3")
-villager_count = 4
+villager_count = 1
 spawn_radius = 5.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -74,3 +74,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -8)
 
 [node name="DropOffPoint1" parent="DropOffPoints" instance=ExtResource("5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="BuildObjects" type="Node3D" parent="."]

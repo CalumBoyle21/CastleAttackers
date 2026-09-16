@@ -1,8 +1,7 @@
 class_name AgentStateMachine
 extends Node
 
-## Generic finite state machine. Each direct child must be an AgentState.
-## The child's node name is its state name, used with change_state().
+## FSM for vilAgent
 
 @export var initial_state: String = "Idle"
 

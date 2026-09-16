@@ -2,8 +2,9 @@ extends Node3D
 
 ## Since the player's mouse is captured for camera-look, "hovering" is
 ## done via a screen-center raycast (a crosshair) instead of the OS
-## cursor position. Anything hit that implements set_highlighted() glows;
-## left-click additionally toggles a hovered villager between Idle/Gather.
+## cursor position. Anything hit that implements set_highlighted() glows.
+## Left-click acts on whatever's hovered: toggles a villager's
+## Idle/Gather state, or opens/closes a drop-off's inventory panel.
 
 @export var interact_distance: float = 15.0
 
@@ -11,6 +12,8 @@ var camera: Camera3D = null
 var hovered_target: Node3D = null
 
 @onready var crosshair: Control = %Crosshair
+@onready var inventory_panel: Control = %InventoryPanel
+@onready var build_controller: Node = $"../BuildController"
 
 func _physics_process(_delta: float) -> void:
 	if camera == null:
@@ -42,5 +45,17 @@ func _update_hover() -> void:
 		crosshair.set_active(hovered_target != null)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact") and hovered_target is VillagerAgent:
+	if not event.is_action_pressed("interact"):
+		return
+	if build_controller.is_active():
+		return  # BuildController handles "interact" itself while placing posts
+
+	if hovered_target is VillagerAgent:
 		hovered_target.toggle_idle_gather()
+	elif hovered_target is DropOffPoint:
+		if inventory_panel.is_open():
+			inventory_panel.close()
+		else:
+			inventory_panel.open_for(hovered_target)
+	elif hovered_target is WallEdge:
+		hovered_target.try_add_board()
