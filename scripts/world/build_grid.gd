@@ -1,9 +1,5 @@
 class_name BuildGrid
 
-## Shared grid math for post placement. Posts snap to CELL_SIZE-spaced
-## world points; NEIGHBOR_OFFSETS defines which cells count as
-## "adjacent" for auto-creating a WallEdge between two posts.
-
 const CELL_SIZE: float = 2.0
 
 const NEIGHBOR_OFFSETS: Array[Vector2i] = [

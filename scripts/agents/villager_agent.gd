@@ -17,18 +17,25 @@ var move_target: Vector3 = Vector3.ZERO
 var has_move_target: bool = false
 
 @onready var visual: Node3D = $Visual
-@onready var mesh_instance: MeshInstance3D = $Visual/MeshInstance3D
+@onready var character_model: Node3D = $Visual/CharacterModel
+@onready var anim_player: AnimationPlayer = $Visual/CharacterModel/AnimationPlayer
 @onready var state_machine: AgentStateMachine = $StateMachine
 
 func _ready() -> void:
 	home_position = global_position
 
-## Called once per physics tick by the StateMachine, after the current
-## state has had a chance to set velocity.x/z via move_along_path().
+## Called once per physics tick by the StateMachine
 func physics_step(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+	_update_animation()
 	move_and_slide()
+
+func _update_animation() -> void:
+	var moving: bool = Vector2(velocity.x, velocity.z).length() > 0.1
+	var target: String = "walk" if moving else "idle"
+	if anim_player.current_animation != target:
+		anim_player.play(target)
 
 func set_move_target(target: Vector3) -> void:
 	move_target = target
@@ -39,8 +46,7 @@ func has_reached_target() -> bool:
 		return true
 	return _flat_distance_to(move_target) <= ARRIVE_DISTANCE
 
-## Steers in a straight line toward move_target and faces the visual mesh
-## toward the direction of travel.
+## Steers in a straight line toward move_target
 ## TODO implement pathfinding.
 func move_along_path(delta: float) -> void:
 	if not has_move_target or _flat_distance_to(move_target) <= ARRIVE_DISTANCE:
@@ -62,8 +68,17 @@ func _flat_distance_to(point: Vector3) -> float:
 	var flat_point := Vector3(point.x, 0, point.z)
 	return flat_pos.distance_to(flat_point)
 
+## Highlighting
 func set_highlighted(value: bool) -> void:
-	mesh_instance.material_overlay = HighlightUtil.get_material() if value else null
+	var mat: Material = HighlightUtil.get_material() if value else null
+	_apply_overlay_recursive(character_model, mat)
+
+## recursivley add highlighting
+func _apply_overlay_recursive(node: Node, mat: Material) -> void:
+	if node is MeshInstance3D:
+		(node as MeshInstance3D).material_overlay = mat
+	for child in node.get_children():
+		_apply_overlay_recursive(child, mat)
 
 func toggle_idle_gather() -> void:
 	if state_machine.current_state and state_machine.current_state.name == "Paused":

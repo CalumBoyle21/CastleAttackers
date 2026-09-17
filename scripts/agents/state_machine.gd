@@ -1,7 +1,7 @@
 class_name AgentStateMachine
 extends Node
 
-## FSM for vilAgent
+## FSM for villager agents
 
 @export var initial_state: String = "Idle"
 

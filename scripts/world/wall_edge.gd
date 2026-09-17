@@ -1,10 +1,6 @@
 class_name WallEdge
 extends StaticBody3D
 
-## Connects two grid-adjacent Posts. Holds 0-3 board meshes; each
-## try_add_board() call spends one crafted "board" and stacks one more
-## board mesh higher, until MAX_BOARDS completes the wall segment.
-
 const MAX_BOARDS: int = 3
 const BOARD_LENGTH: float = BuildGrid.CELL_SIZE
 const BOARD_THICKNESS: float = 0.15
@@ -19,8 +15,7 @@ var board_count: int = 0
 @onready var boards_container: Node3D = $BoardsContainer
 @onready var hover_indicator: MeshInstance3D = $HoverIndicator
 
-## Must be called before add_child() — positions/orients this edge
-## between the two posts.
+## Must be called before add_child()!!!
 func setup(a: Post, b: Post) -> void:
 	post_a = a
 	post_b = b
@@ -31,8 +26,6 @@ func setup(a: Post, b: Post) -> void:
 func is_complete() -> bool:
 	return board_count >= MAX_BOARDS
 
-## Spends one crafted board and adds it to this edge. Returns false if
-## already complete or the nearest home can't afford it.
 func try_add_board() -> bool:
 	if is_complete():
 		return false

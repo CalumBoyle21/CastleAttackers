@@ -5,8 +5,6 @@ var cell: Vector2i
 
 @onready var mesh_instance: MeshInstance3D = $MeshInstance3D
 
-## Must be called before add_child() — _ready() registers using
-## whatever cell/position is already set by then.
 func setup(new_cell: Vector2i) -> void:
 	cell = new_cell
 	position = BuildGrid.cell_to_world(new_cell)

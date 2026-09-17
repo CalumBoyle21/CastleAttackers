@@ -9,6 +9,7 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var spring_arm: SpringArm3D = $CameraPivot/SpringArm3D
 @onready var visual: Node3D = $Visual
+@onready var anim_player: AnimationPlayer = $Visual/CharacterModel/AnimationPlayer
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -49,4 +50,11 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
+	_update_animation()
 	move_and_slide()
+
+func _update_animation() -> void:
+	var moving: bool = Vector2(velocity.x, velocity.z).length() > 0.1
+	var target: String = "walk" if moving else "idle"
+	if anim_player.current_animation != target:
+		anim_player.play(target)

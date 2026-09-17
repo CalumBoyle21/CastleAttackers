@@ -1,14 +1,5 @@
 extends Control
 
-## Minecraft-style hotbar. Slots are a fixed mapping (index -> resource
-## type), not dynamically derived from inventory contents — that keeps
-## selection stable even as items are gained/spent (a Dictionary's key
-## order isn't something a player should have to track). Counts are
-## read live from the nearest DropOffPoint, same "home" every other
-## interaction already uses. Add a new entry to SLOT_ITEMS to add a
-## new hotbar slot; add it to PLACEABLE_TYPES if selecting it should
-## drive BuildController's placement-ghost mode.
-
 const SLOT_ITEMS: Array[String] = ["wood", "post", "board", "", "", "", "", "", ""]
 const PLACEABLE_TYPES: Array[String] = ["post"]
 
@@ -101,7 +92,6 @@ func select_slot(index: int) -> void:
 	selected_index = index
 	_update_slot_visuals()
 
-## What the currently selected slot holds, "" if none/empty.
 func get_selected_type() -> String:
 	if selected_index < 0 or selected_index >= SLOT_ITEMS.size():
 		return ""

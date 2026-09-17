@@ -1,14 +1,5 @@
 extends Node3D
 
-## Post-placement mode. Driven by the hotbar: active whenever its
-## selected slot is a placeable item (currently just "post"), rather
-## than a separate manual toggle. A ghost preview follows the crosshair
-## snapped to the build grid (green = valid placement, red =
-## blocked/occupied). "interact" places a post while active, spending
-## one crafted "post" from the nearest home.
-## Board placement doesn't need a mode — see WallEdge.try_add_board(),
-## triggered directly by VillagerInteractor on hover+click.
-
 @export var post_scene: PackedScene
 @export var wall_edge_scene: PackedScene
 @export var max_build_distance: float = 8.0

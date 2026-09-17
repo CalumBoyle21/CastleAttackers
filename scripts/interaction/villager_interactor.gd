@@ -1,11 +1,5 @@
 extends Node3D
 
-## Since the player's mouse is captured for camera-look, "hovering" is
-## done via a screen-center raycast (a crosshair) instead of the OS
-## cursor position. Anything hit that implements set_highlighted() glows.
-## Left-click acts on whatever's hovered: toggles a villager's
-## Idle/Gather state, or opens/closes a drop-off's inventory panel.
-
 @export var interact_distance: float = 15.0
 
 var camera: Camera3D = null
@@ -48,7 +42,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("interact"):
 		return
 	if build_controller.is_active():
-		return  # BuildController handles "interact" itself while placing posts
+		return  # BuildController handles interact
 
 	if hovered_target is VillagerAgent:
 		hovered_target.toggle_idle_gather()

@@ -24,9 +24,6 @@ func can_afford(costs: Dictionary) -> bool:
 			return false
 	return true
 
-## Deducts the given resource costs with no output produced. Used by
-## build placement (posts/boards spend crafted items directly). Returns
-## false (no change made) if not fully affordable.
 func spend(costs: Dictionary) -> bool:
 	if not can_afford(costs):
 		return false
@@ -37,8 +34,6 @@ func spend(costs: Dictionary) -> bool:
 	inventory_changed.emit()
 	return true
 
-## Spends a recipe's costs and adds its output. Returns false (no
-## change made) if the costs aren't fully affordable.
 func craft(recipe: Dictionary) -> bool:
 	if not spend(recipe.get("costs", {})):
 		return false

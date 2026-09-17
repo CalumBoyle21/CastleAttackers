@@ -15,8 +15,8 @@ func register_drop_off(node: Node3D) -> void:
 func unregister_drop_off(node: Node3D) -> void:
 	drop_off_points.erase(node)
 
-var posts: Dictionary = {}    # Vector2i cell -> Post
-var edges: Dictionary = {}    # String edge key -> WallEdge
+var posts: Dictionary = {}   
+var edges: Dictionary = {}    
 
 func register_post(cell: Vector2i, post: Node3D) -> void:
 	posts[cell] = post
