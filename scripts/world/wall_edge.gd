@@ -8,6 +8,13 @@ const BOARD_HEIGHT: float = 0.3
 const BOARD_Y_START: float = 0.3
 const BOARD_Y_STEP: float = 0.4
 
+## Collision layer bit that makes this edge physically block movement
+## (same layer Post/Ground use). Not part of the base collision_layer
+## set in WallEdge.tscn — an empty edge (0 boards) stays walk-through
+## and is only hoverable/clickable; this bit gets added the moment the
+## first board is placed.
+const BLOCKING_LAYER_BIT: int = 1
+
 var post_a: Post
 var post_b: Post
 var board_count: int = 0
@@ -33,6 +40,8 @@ func try_add_board() -> bool:
 	if drop_off == null or not drop_off.spend({"board": 1}):
 		return false
 	board_count += 1
+	if board_count == 1:
+		collision_layer |= BLOCKING_LAYER_BIT
 	_add_board_mesh()
 	return true
 

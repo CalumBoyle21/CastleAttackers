@@ -13,7 +13,7 @@ transparency = 1
 size = Vector3(2.0, 1.2, 0.3)
 
 [node name="WallEdge" type="StaticBody3D"]
-collision_layer = 1
+collision_layer = 4
 collision_mask = 0
 script = ExtResource("1")
 
